@@ -1,0 +1,4 @@
+[
+  { "id": "1", "name": "Laptop", "price": 1000, "category": "electronics" },
+  { "id": "2", "name": "Shoes", "price": 200, "category": "fashion" }
+]

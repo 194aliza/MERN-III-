@@ -1,0 +1,64 @@
+/* Command Palette Styles */
+[cmdk-root] {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 16px 70px rgba(0, 0, 0, 0.2);
+  border: 1px solid #e2e8f0;
+}
+
+.dark [cmdk-root] {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  color: white;
+}
+
+[cmdk-input] {
+  font-family: inherit;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px;
+  outline: none;
+  background: transparent;
+  border: none;
+  color: #1e293b;
+}
+
+.dark [cmdk-input] {
+  color: #f1f5f9;
+}
+
+[cmdk-item] {
+  content-visibility: auto;
+  cursor: pointer;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  color: #475569;
+  user-select: none;
+  transition: all 150ms ease;
+}
+
+[cmdk-item][aria-selected='true'] {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+
+.dark [cmdk-item][aria-selected='true'] {
+  background: #1e293b;
+  color: #60a5fa;
+}
+
+[cmdk-group-heading] {
+  user-select: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  padding: 16px 8px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

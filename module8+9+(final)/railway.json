@@ -1,0 +1,37 @@
+{
+  "name": "MERN3 Full Stack",
+  "description": "MERN Stack Application with Real-time Orders",
+  "services": [
+    {
+      "name": "mern-backend",
+      "root": "backend",
+      "buildCommand": "npm install && npm run build",
+      "startCommand": "npm start",
+      "environment": [
+        "PORT=5000",
+        "NODE_ENV=production",
+        "FRONTEND_URL=${{ RAILWAY_PUBLIC_DOMAIN_FRONTEND }}"
+      ]
+    },
+    {
+      "name": "mern-frontend",
+      "root": ".",
+      "buildCommand": "npm install && npm run build",
+      "startCommand": "npm start",
+      "environment": [
+        "NEXT_PUBLIC_API_URL=${{ RAILWAY_PUBLIC_DOMAIN_BACKEND }}/api/v1",
+        "NEXT_PUBLIC_SOCKET_URL=${{ RAILWAY_PUBLIC_DOMAIN_BACKEND }}",
+        "NEXT_PUBLIC_APP_MODE=production"
+      ]
+    }
+  ],
+  "variables": {
+    "MONGO_URI": "mongodb+srv://user:pass@cluster.mongodb.net/mern-db",
+    "JWT_SECRET": "your-secret-key-here",
+    "EMAIL_USER": "your-email@gmail.com",
+    "EMAIL_PASS": "your-app-password",
+    "CLOUDINARY_NAME": "your-name",
+    "CLOUDINARY_API_KEY": "your-key",
+    "CLOUDINARY_API_SECRET": "your-secret"
+  }
+}
