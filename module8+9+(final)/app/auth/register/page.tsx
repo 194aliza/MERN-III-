@@ -50,27 +50,71 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl w-full max-w-md space-y-4"
+        className="bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-2xl shadow-slate-900/10 backdrop-blur-sm p-10 rounded-[2rem] w-full max-w-md space-y-6"
       >
-        <h2 className="text-2xl font-bold text-center">Create Account</h2>
+        <h2 className="text-3xl font-semibold text-center text-slate-900 dark:text-white">
+          Create Account
+        </h2>
 
-        {serverError && <p className="text-red-500">{serverError}</p>}
+        {serverError && (
+          <p className="text-red-600 text-sm bg-red-50 dark:bg-red-950/30 p-3 rounded-xl border border-red-200 dark:border-red-700">
+            {serverError}
+          </p>
+        )}
 
-        <input {...register("name")} placeholder="Full Name" className="w-full p-2 border rounded" />
-        <input {...register("email")} placeholder="Email" className="w-full p-2 border rounded" />
-        <input type="password" {...register("password")} placeholder="Password" className="w-full p-2 border rounded" />
-        <input type="password" {...register("confirmPassword")} placeholder="Confirm Password" className="w-full p-2 border rounded" />
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
+            <input
+              {...register("name")}
+              placeholder="Full Name"
+              className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-500"
+            />
+          </div>
 
-        <button className="w-full bg-blue-600 text-white py-2 rounded">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email</label>
+            <input
+              {...register("email")}
+              placeholder="Email"
+              className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-500"
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message as string}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password</label>
+            <input
+              type="password"
+              {...register("password")}
+              placeholder="Password"
+              className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-500"
+            />
+            {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message as string}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Confirm Password</label>
+            <input
+              type="password"
+              {...register("confirmPassword")}
+              placeholder="Confirm Password"
+              className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-500"
+            />
+            {errors.confirmPassword && <p className="text-red-500 text-sm mt-2">{errors.confirmPassword.message as string}</p>}
+          </div>
+        </div>
+
+        <button className="w-full rounded-2xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-[0.99]">
           {isSubmitting ? "Creating..." : "Register"}
         </button>
 
-        <p className="text-center text-sm">
-          Already have an account?{" "}
-          <Link href="/auth/login" className="text-blue-600">
+        <p className="text-center text-sm text-slate-600 dark:text-slate-400">
+          Already have an account?{' '}
+          <Link href="/auth/login" className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400">
             Login
           </Link>
         </p>

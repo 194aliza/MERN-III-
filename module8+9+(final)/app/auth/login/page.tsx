@@ -54,38 +54,47 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 py-10">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl w-full max-w-md space-y-4"
+        className="bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-2xl shadow-slate-900/10 backdrop-blur-sm p-10 rounded-[2rem] w-full max-w-md space-y-6"
       >
-        <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+        <h1 className="text-3xl font-semibold text-slate-900 dark:text-white text-center">
+          Login
+        </h1>
 
         {serverError && (
-          <p className="text-red-500 text-sm bg-red-50 p-2 rounded">
+          <p className="text-red-600 text-sm bg-red-50 dark:bg-red-950/30 p-3 rounded-xl border border-red-200 dark:border-red-700">
             {serverError}
           </p>
         )}
 
-        <div>
-          <label>Email</label>
-          <input {...register("email")} className="w-full p-2 border rounded-md text-black" />
-          {errors.email && <p className="text-red-500">{errors.email.message as string}</p>}
+        <div className="space-y-3">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
+          <input
+            {...register("email")}
+            className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-500"
+          />
+          {errors.email && <p className="text-red-500 text-sm">{errors.email.message as string}</p>}
         </div>
 
-        <div>
-          <label>Password</label>
-          <input type="password" {...register("password")} className="w-full p-2 border rounded-md text-black" />
-          {errors.password && <p className="text-red-500">{errors.password.message as string}</p>}
+        <div className="space-y-3">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
+          <input
+            type="password"
+            {...register("password")}
+            className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-500"
+          />
+          {errors.password && <p className="text-red-500 text-sm">{errors.password.message as string}</p>}
         </div>
 
-        <button className="w-full bg-black text-white py-2 rounded-lg">
+        <button className="w-full rounded-2xl bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-[0.99]">
           {isSubmitting ? "Wait..." : "Login"}
         </button>
 
-        <p className="text-center text-sm">
-          Dont have an account?{" "}
-          <Link href="/auth/register" className="text-blue-600">
+        <p className="text-center text-sm text-slate-600 dark:text-slate-400">
+          Dont have an account?{' '}
+          <Link href="/auth/register" className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400">
             Register
           </Link>
         </p>
