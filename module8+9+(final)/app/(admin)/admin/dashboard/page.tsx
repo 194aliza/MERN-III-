@@ -25,7 +25,7 @@ export default function AdminDashboard() {
         };
 
         // ✅ Get all orders (admin endpoint)
-        const resOrders = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+        const resOrders = await fetch(`/api/orders`, {
           headers,
         });
         if (resOrders.ok) {

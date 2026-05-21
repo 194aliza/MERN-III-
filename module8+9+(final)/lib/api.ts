@@ -12,7 +12,7 @@ const getHeaders = () => {
     Authorization: token ? `Bearer ${token}` : "",
   };
 };
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "/api";
 
 export const api = {
   // 🛍️ PRODUCTS
@@ -102,7 +102,7 @@ export const api = {
 },
 
   async getMyOrders() {
-  const response = await fetch(`${API_BASE}/orders/my`, {
+  const response = await fetch(`${API_BASE}/orders`, {
     headers: getHeaders(),
   });
   if (!response.ok) throw new Error("Failed to fetch orders");

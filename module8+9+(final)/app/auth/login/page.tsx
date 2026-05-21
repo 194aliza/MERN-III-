@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 
+const API_URL = "/api";
+
 export default function LoginPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
@@ -23,7 +25,7 @@ export default function LoginPage() {
     setServerError("");
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
