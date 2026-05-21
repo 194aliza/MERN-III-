@@ -12,7 +12,10 @@ const getHeaders = () => {
     Authorization: token ? `Bearer ${token}` : "",
   };
 };
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+const HEALTH_BASE = process.env.NEXT_PUBLIC_API_URL
+  ? process.env.NEXT_PUBLIC_API_URL.replace(/\/v1$/, "")
+  : "http://localhost:5000/api";
 
 export const api = {
   // 🛍️ PRODUCTS
@@ -123,7 +126,7 @@ export const api = {
   // 🏥 HEALTH
   async checkHealth() {
     try {
-      const response = await fetch("http://localhost:5000/api/health");
+      const response = await fetch(`${HEALTH_BASE}/health`);
       return response.ok;
     } catch {
       return false;

@@ -35,9 +35,7 @@ export default function WelcomePage() {
   }, [router]);
 
   const handleLogout = async () => {
-    await fetch("/api/logout", { method: "POST" });
-    
-    // Cookies clear karne ka asaan tareeqa
+    // No backend logout endpoint is required here; clear client-side session state.
     const cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i];

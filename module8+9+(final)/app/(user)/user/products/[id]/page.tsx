@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 export default async function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   
-  const res = await fetch(`/api/products`, { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/products`, { cache: 'no-store' });
   const products = await res.json();
   const product = products.find((p: any) => p.id === Number(id));
 
