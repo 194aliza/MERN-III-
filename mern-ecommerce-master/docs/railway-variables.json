@@ -1,0 +1,151 @@
+{
+  "variables": {
+    "NODE_ENV": {
+      "name": "NODE_ENV",
+      "value": "production",
+      "description": "Environment mode for production deployment"
+    },
+    "PORT": {
+      "name": "PORT",
+      "value": "5000",
+      "description": "Backend server port"
+    },
+    "MONGO_URI": {
+      "name": "MONGO_URI",
+      "value": "mongodb+srv://username:password@cluster.mongodb.net/ecommerce?retryWrites=true&w=majority",
+      "description": "MongoDB Atlas connection string",
+      "required": true,
+      "notes": "Get from https://www.mongodb.com/cloud/atlas"
+    },
+    "UPSTASH_REDIS_URL": {
+      "name": "UPSTASH_REDIS_URL",
+      "value": "redis://:password@hostname:port",
+      "description": "Upstash Redis connection URL",
+      "required": true,
+      "notes": "Get from https://upstash.com"
+    },
+    "CLIENT_URL": {
+      "name": "CLIENT_URL",
+      "value": "https://yourdomain.com",
+      "description": "Frontend URL for CORS",
+      "required": true,
+      "example": "https://yourapp.vercel.app or https://yourdomain.com"
+    },
+    "ACCESS_TOKEN_SECRET": {
+      "name": "ACCESS_TOKEN_SECRET",
+      "value": "generate-using-crypto-randomBytes",
+      "description": "JWT access token secret",
+      "required": true,
+      "notes": "Generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
+    },
+    "REFRESH_TOKEN_SECRET": {
+      "name": "REFRESH_TOKEN_SECRET",
+      "value": "generate-using-crypto-randomBytes",
+      "description": "JWT refresh token secret",
+      "required": true,
+      "notes": "Generate with: node -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\""
+    },
+    "STRIPE_SECRET_KEY": {
+      "name": "STRIPE_SECRET_KEY",
+      "value": "sk_live_xxxxxxxxxxxxxxxxxxxx",
+      "description": "Stripe live secret API key",
+      "required": false,
+      "notes": "Get from https://dashboard.stripe.com/apikeys"
+    },
+    "CLOUDINARY_CLOUD_NAME": {
+      "name": "CLOUDINARY_CLOUD_NAME",
+      "value": "your-cloudinary-cloud-name",
+      "description": "Cloudinary cloud name",
+      "required": false,
+      "notes": "Get from https://cloudinary.com/console"
+    },
+    "CLOUDINARY_API_KEY": {
+      "name": "CLOUDINARY_API_KEY",
+      "value": "xxxxxxxxxxxxxxxxxxxx",
+      "description": "Cloudinary API key",
+      "required": false,
+      "notes": "Get from https://cloudinary.com/console"
+    },
+    "CLOUDINARY_API_SECRET": {
+      "name": "CLOUDINARY_API_SECRET",
+      "value": "xxxxxxxxxxxxxxxxxxxx",
+      "description": "Cloudinary API secret",
+      "required": false,
+      "notes": "Get from https://cloudinary.com/console"
+    }
+  },
+  "services": {
+    "MongoDB": {
+      "provider": "MongoDB Atlas",
+      "url": "https://www.mongodb.com/cloud/atlas",
+      "setup": [
+        "1. Go to mongodb.com/cloud/atlas",
+        "2. Create account or login",
+        "3. Click 'Create Database'",
+        "4. Choose M0 (free tier)",
+        "5. Create user and whitelist IP",
+        "6. Copy connection string",
+        "7. Replace <username>, <password>, <database>"
+      ]
+    },
+    "Redis": {
+      "provider": "Upstash",
+      "url": "https://upstash.com",
+      "setup": [
+        "1. Go to upstash.com",
+        "2. Sign up (free tier available)",
+        "3. Create new Redis database",
+        "4. Copy connection string",
+        "5. Format: redis://:password@hostname:port"
+      ]
+    },
+    "Stripe": {
+      "provider": "Stripe",
+      "url": "https://stripe.com",
+      "setup": [
+        "1. Go to stripe.com",
+        "2. Create account or login",
+        "3. Go to Dashboard → Developers → API Keys",
+        "4. Copy your Live Secret Key (sk_live_...)",
+        "5. Never expose this key publicly"
+      ]
+    },
+    "Cloudinary": {
+      "provider": "Cloudinary",
+      "url": "https://cloudinary.com",
+      "setup": [
+        "1. Go to cloudinary.com",
+        "2. Sign up (free tier available)",
+        "3. Go to Dashboard",
+        "4. Copy Cloud Name, API Key, API Secret",
+        "5. Never expose API Secret publicly"
+      ]
+    }
+  },
+  "deployment_steps": {
+    "step_1": "Go to https://railway.app and login",
+    "step_2": "Click 'New Project' → 'Deploy from GitHub'",
+    "step_3": "Select your repository",
+    "step_4": "Railway automatically builds from Dockerfile",
+    "step_5": "Go to Variables tab and add all environment variables",
+    "step_6": "Deployment starts automatically",
+    "step_7": "Get your live URL from Railway dashboard",
+    "step_8": "Test health endpoint: https://your-url/api/health",
+    "step_9": "Update frontend with new API URL"
+  },
+  "quick_setup": {
+    "fill_in_order": [
+      "1. NODE_ENV = production",
+      "2. PORT = 5000",
+      "3. MONGO_URI = [from MongoDB Atlas]",
+      "4. UPSTASH_REDIS_URL = [from Upstash]",
+      "5. CLIENT_URL = [your frontend URL]",
+      "6. ACCESS_TOKEN_SECRET = [generated random]",
+      "7. REFRESH_TOKEN_SECRET = [generated random]",
+      "8. STRIPE_SECRET_KEY = [from Stripe]",
+      "9. CLOUDINARY_CLOUD_NAME = [from Cloudinary]",
+      "10. CLOUDINARY_API_KEY = [from Cloudinary]",
+      "11. CLOUDINARY_API_SECRET = [from Cloudinary]"
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:7.0-alpine
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: password
+        options: >-
+          --health-cmd mongosh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 27017:27017
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Run tests
+        run: npm run test:coverage
+        env:
+          NODE_ENV: test
+          MONGODB_URI: mongodb://admin:password@localhost:27017/ecommerce?authSource=admin
+          REDIS_URL: redis://localhost:6379
+          ACCESS_TOKEN_SECRET: test-secret
+          REFRESH_TOKEN_SECRET: test-secret
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          fail_ci_if_error: false
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(cat coverage/coverage-summary.json | grep -o '"lines":{"total":[0-9.]*' | grep -o '[0-9.]*$')
+          if (( $(echo "$COVERAGE < 70" | bc -l) )); then
+            echo "Coverage is $COVERAGE%, below 70% threshold"
+            exit 1
+          fi
+          echo "Coverage is $COVERAGE%, meets 70% threshold"
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        if: secrets.DOCKER_USERNAME != null
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: ${{ secrets.DOCKER_USERNAME != null }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/mern-ecommerce:latest
+            ${{ secrets.DOCKER_USERNAME }}/mern-ecommerce:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+        if: secrets.DOCKER_USERNAME != null
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          npm install -g @railway/cli
+          railway link ${{ secrets.RAILWAY_PROJECT_ID }}
+          railway up
+        if: secrets.RAILWAY_TOKEN != null
+
+      - name: Deployment Notification
+        run: |
+          echo "Deployment completed successfully!"
+          echo "API URL: ${{ secrets.RAILWAY_API_URL }}"
+        if: secrets.RAILWAY_API_URL != null
+
+  health-check:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Check API Health
+        run: |
+          curl -f ${{ secrets.RAILWAY_API_URL }}/api/health || exit 1
+          echo "API is healthy!"
+        if: secrets.RAILWAY_API_URL != null
+        continue-on-error: true
