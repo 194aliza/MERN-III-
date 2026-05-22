@@ -20,7 +20,7 @@ Complete Docker containerization and deployment setup for the MERN E-Commerce pl
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --production
 
 # 2. Runtime - lightweight production image
 FROM node:18-alpine
@@ -131,7 +131,7 @@ app.get("/api/health", async (req, res) => {
       db: dbConnected,
       uptime,
       timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || "development"
+      environment: process.env.NODE_ENV || "production"
     });
   } catch (error) {
     res.status(500).json({
