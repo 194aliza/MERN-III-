@@ -12,7 +12,7 @@ import cartRoutes from "./routes/cart.route.js";
 import couponRoutes from "./routes/coupon.route.js";
 import paymentRoutes from "./routes/payment.route.js";
 import analyticsRoutes from "./routes/analytics.route.js";
-
+import mongoose from "mongoose";
 import { connectDB } from "./lib/db.js";
 import { swaggerOptions } from "./lib/swagger.js";
 
@@ -35,7 +35,7 @@ app.use(cors({
 // Health Check Endpoint
 app.get("/api/health", async (req, res) => {
 	try {
-		const mongoStatus = require("mongoose").connection.readyState;
+		const mongoStatus = mongoose.connection.readyState;
 		const dbConnected = mongoStatus === 1 ? "connected" : "disconnected";
 		const uptime = Math.floor((Date.now() - startTime) / 1000);
 
